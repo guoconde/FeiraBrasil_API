@@ -7,6 +7,6 @@ app.use(cors())
 app.use(json())
 app.use(router)
 
-app.listen(process.env.PORT, ()=>{
-    console.log(`Server listening on Port ${process.env.PORT}`)
+app.listen(5000, ()=>{
+    console.log(`Server listening on Port`)
 })
