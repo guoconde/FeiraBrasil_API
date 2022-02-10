@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import db from "../db.js"
 
 export async function userCart (req, res)  {
@@ -38,14 +39,16 @@ export async function deleteProduct (req, res)  {
 
 export async function confirmPurchase (req, res)  {
     const { user } = res.locals
-    const { purchaseInfo, products } = req.body
-    const {username, email, info} = user
+    let { purchaseInfo, products } = req.body
+    if(purchaseInfo === "bank slip") purchaseInfo = "Boleto bancário"
+    else purchaseInfo = `Cartão de crédito em ${purchaseInfo.installment}`
 
     try {
         await db.collection("purchases").insertOne({
-            user:{username,email,info},
+            userId:user._id,
             purchaseInfo,
-            products
+            ...products,
+            date: dayjs().format("DD/MM/YYYY")
         })
         return res.sendStatus(200)
     } catch (error) {

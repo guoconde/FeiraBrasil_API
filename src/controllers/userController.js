@@ -15,8 +15,19 @@ export async function saveInfo(req,res){
         },{
             $set: {info:req.body}
         })
+        res.sendStatus(200)
     } catch (error) {
         res.status(500).send(error)
     }
-    res.sendStatus(200)
+}
+
+export async function getHistoric(req,res){
+    const { user } = res.locals
+    
+    try {
+        const historic = await db.collection("purchases").find({userId:user._id}).toArray()
+        res.send(historic)
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
