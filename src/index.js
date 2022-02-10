@@ -8,5 +8,5 @@ app.use(json())
 app.use(router)
 
 app.listen(5000, ()=>{
-    console.log("Server listening on Port 5000")
-})  
+    console.log(`Server listening on Port`)
+})
