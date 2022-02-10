@@ -1,6 +1,7 @@
 import signUpSchema from "../schemas/signUpSchema.js"
 import { stripHtml } from "string-strip-html"
 import signInSchema from "../schemas/signInSchema.js"
+import infoSchema from "../schemas/infoSchema.js"
 
 function sanitizeString(string){
     return (stripHtml(string).result).trim()
@@ -8,7 +9,8 @@ function sanitizeString(string){
 
 const schemas = {
     "/cadastrar": signUpSchema,
-    "/entrar": signInSchema
+    "/entrar": signInSchema,
+    "/informacoes": infoSchema
 }
 
 export default async function validateSchemaMiddleware(req, res, next){
