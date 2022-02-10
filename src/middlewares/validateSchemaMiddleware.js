@@ -2,6 +2,7 @@ import signUpSchema from "../schemas/signUpSchema.js"
 import { stripHtml } from "string-strip-html"
 import signInSchema from "../schemas/signInSchema.js"
 import infoSchema from "../schemas/infoSchema.js"
+import creditCardSchema from "../schemas/creditCardSchema.js"
 
 function sanitizeString(string){
     return (stripHtml(string).result).trim()
@@ -10,12 +11,18 @@ function sanitizeString(string){
 const schemas = {
     "/cadastrar": signUpSchema,
     "/entrar": signInSchema,
-    "/informacoes": infoSchema
+    "/informacoes": infoSchema,
+    "/pagamento": creditCardSchema
 }
 
 export default async function validateSchemaMiddleware(req, res, next){
-    const { body } = req
+    let { body } = req
     const schema = schemas["/"+req.path.split("/")[1]]
+    
+    if("/"+req.path.split("/")[1] === "/pagamento"){
+        if(body.purchaseInfo === "bank slip") return next()
+        else body = body.purchaseInfo
+    } 
     
     Object.keys(body).forEach( key => {
         if(typeof(body[key]) === "string") body[key] = sanitizeString(body[key])
