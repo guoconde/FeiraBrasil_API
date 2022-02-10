@@ -35,3 +35,20 @@ export async function deleteProduct (req, res)  {
         res.status(500).send(error.message)
     }
 }
+
+export async function confirmPurchase (req, res)  {
+    const { user } = res.locals
+    const { purchaseInfo, products } = req.body
+    const {username, email, info} = user
+
+    try {
+        await db.collection("purchases").insertOne({
+            user:{username,email,info},
+            purchaseInfo,
+            products
+        })
+        return res.sendStatus(200)
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+}
