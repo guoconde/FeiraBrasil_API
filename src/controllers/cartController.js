@@ -2,15 +2,19 @@ import dayjs from "dayjs"
 import db from "../db.js"
 
 export async function userCart (req, res)  {
-    const { user } = res.locals
+    const { user } = res.locals  
     
     try {
         const userCart = await db.collection("carts").findOne({userId:user._id})
         const products = []
         
+        
         for(const product of userCart.cart){
-            products.push(await db.collection("products").findOne({_id:product}))
+            let productInfo = await db.collection("products").findOne({_id:product.id})
+            console.log(productInfo)
+            products.push({productInfo, quantity:product.quantity})
         }
+        console.log(products)
 
         res.send(products)
     } catch (error) {
