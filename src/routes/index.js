@@ -2,7 +2,7 @@ import { Router } from 'express';
 import authRouter from './authRouter.js';
 import productRouter from './productRouter.js';
 import cartRouter from './cartRouter.js';
-import userRouter from './userAuth.js';
+import userRouter from './userRouter.js';
 
 const router = Router();
 router.use(authRouter)
