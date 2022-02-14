@@ -16,14 +16,21 @@ export async function renderProducts(req, res) {
 export async function favoriteProduct(req, res) {
 
     const { id } = req.params
-    const { favorite } = req.body
+    const { userId } = req.body
+    const { isFavorite } = req.body
 
     try {
-        await db.collection('products').updateOne({ _id: new ObjectId(id) }, { $set: { favorite: favorite } })
-
         const product = await db.collection('products').findOne({ _id: new ObjectId(id) })
+        const {favorites} = await db.collection('users').findOne({ _id: new ObjectId(userId)})
+        
+        if(isFavorite) {
+            await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { favorites: [...favorites, product] } })
+        } else {
+            const teste = favorites.filter(el => el._id != id)
+            await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { favorites: teste } })
+        }
 
-        console.log(product)
+        res.send(favorites)
     } catch (error) {
 
     }

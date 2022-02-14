@@ -36,7 +36,7 @@ export async function signIn(req, res) {
             const chaveSecreta = process.env.JWT_SECRET;
             const token = jwt.sign(data, chaveSecreta);
 
-            return res.status(200).send({token, username:participant.username});
+            return res.status(200).send({token, username:participant.username, userId: participant._id});
         }else{
             return res.status(401).send("Participante não existe")
         }
