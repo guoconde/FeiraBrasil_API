@@ -16,11 +16,11 @@ export async function userCart (req, res)  {
 export async function postCart(req, res) {
     const { user } = res.locals
     const teste = req.body
-
+    
     try {
-        const userCart = await db.collection('users').updateOne({ _id: user._id }, { $set: { cart: teste } })
-        console.log(userCart)
+        await db.collection('users').updateOne({ _id: user._id }, { $set: { cart: teste } })
     } catch (error) {
+        res.status(500).send(error)
 
     }
 }
