@@ -21,9 +21,9 @@ export async function favoriteProduct(req, res) {
 
     try {
         const product = await db.collection('products').findOne({ _id: new ObjectId(id) })
-        const {favorites} = await db.collection('users').findOne({ _id: new ObjectId(userId)})
-        
-        if(isFavorite) {
+        const { favorites } = await db.collection('users').findOne({ _id: new ObjectId(userId) })
+
+        if (isFavorite) {
             await db.collection('users').updateOne({ _id: new ObjectId(userId) }, { $set: { favorites: [...favorites, product] } })
         } else {
             const teste = favorites.filter(el => el._id != id)
@@ -35,4 +35,10 @@ export async function favoriteProduct(req, res) {
 
     }
 
+}
+
+export async function favoriteList(req, res) {
+    const { user } = res.locals
+
+    res.send(user.favorites)
 }

@@ -14,7 +14,7 @@ export async function userCart(req, res) {
 
         console.log(userCart.cart)
 
-        res.send(userCart.cart)
+        res.send(userCart)
     } catch (error) {
         res.status(500).send(error)
     }
@@ -37,11 +37,11 @@ export async function deleteProduct(req, res) {
     const { user } = res.locals
 
     try {
-        const userCart = await db.collection("carts").findOne({ userId: user._id })
+        const userCart = await db.collection("users").findOne({ _id: user._id })
 
-        const newcart = await userCart.cart.filter((product) => product.toString() !== id);
-        await db.collection("carts").updateOne({
-            userId: user._id
+        const newcart = await userCart.cart.filter((product) => product._id !== id);
+        await db.collection("users").updateOne({
+            _id: user._id
         }, {
             $set: { cart: newcart }
         })
